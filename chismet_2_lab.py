@@ -28,7 +28,7 @@ def dihotomia(a, b, eps):
         mid_point = (a + b) / 2
         if my_func(mid_point) == 0:
             return mid_point, iteration
-        elif (my_func(mid_point) * a) < 0:
+        elif (my_func(mid_point) * my_func(a)) < 0:
             b = mid_point
         else:
             a = mid_point
