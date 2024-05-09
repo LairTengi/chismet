@@ -1,3 +1,5 @@
+import warnings
+
 import numpy as np
 import math
 import matplotlib.pyplot as plt
@@ -12,28 +14,33 @@ def f_integr(x):
 
 
 def func_for_eyler(x_values, y_values, h):
-    for n, i in enumerate(x_values):
-        if n == 0:
+    for i in range(len(x_values)):
+        if i == 0:
             y_values[0] = -3
         else:
-            y_values[n] = y_values[n - 1] + (3 * math.sqrt(i) / 2) * h
+            y_values[i] = y_values[i - 1] + (3 * math.sqrt(x_values[i - 1]) / 2) * h
 
 
 def func_for_teylor(x_values, y_values, h):
-    for n, i in enumerate(x_values):
-        if n == 0:
+    for i in range(len(x_values)):
+        warnings.filterwarnings("error", category=RuntimeWarning)
+        if i == 0:
             y_values[0] = -3
         else:
-            y_values[n] = y_values[n - 1] + h * 3 * math.sqrt(i) / 2 + 3 * h * h / (8 * math.sqrt(i)) \
-                          - pow(h, 3) / 8 * pow(i, -3 / 2)
+            try:
+                y_values[i] = y_values[i - 1] + h * 3 * math.sqrt(x_values[i - 1]) / 2 + 3 * h * h / (
+                            8 * math.sqrt(x_values[i - 1])) - pow(h, 3) / 16 * pow((x_values[i - 1]), -3 / 2)
+            except Exception as e:
+                print("Caught a RuntimeWarning:", e)
 
 
 def func_for_trapez(x_values, y_values, h):
-    for n, i in enumerate(x_values):
-        if n == 0:
+    for i in range(len(x_values)):
+        if i == 0:
             y_values[0] = -3
         else:
-            y_values[n] = y_values[n - 1] + h / 2 * (3 / 2 * math.sqrt(i + 1) + 3 / 2 * math.sqrt(i))
+            y_values[i] = y_values[i - 1] + h / 2 * (
+                    3 / 2 * math.sqrt(x_values[i]) + 3 / 2 * math.sqrt(x_values[i - 1]))
 
 
 def analytics(N10, N20, N30):
@@ -108,7 +115,7 @@ def trapezoid(x_values10, x_values20, x_values30, y_values10, y_values20, y_valu
 
 
 def all_func(h, N):
-    x_values = np.linspace(0, 2, N)
+    x_values = np.linspace(0, 1, N)
     y_values = f_integr(x_values)
     plt.plot(x_values, y_values, label="Аналитический")
     func_for_eyler(x_values, y_values, h)
