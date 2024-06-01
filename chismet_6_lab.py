@@ -93,7 +93,7 @@ def shootting(n):
 
 if __name__ == "__main__":
     # n задаёт количество разбиений отрезка
-    n = 50
+    n = 10
     x_values = np.linspace(0, 1, n)
 
     # Аналитическое решение
